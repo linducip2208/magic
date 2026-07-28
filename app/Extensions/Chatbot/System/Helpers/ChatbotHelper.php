@@ -17,4 +17,16 @@ class ChatbotHelper
         //
         //		]
     }
+
+    public static function installedChannelKeys(): array
+    {
+        $keys = [];
+        if (MarketplaceHelper::isRegistered('chatbot-telegram')) {
+            $keys[] = 'telegram';
+        }
+        if (MarketplaceHelper::isRegistered('chatbot-whatsapp')) {
+            $keys[] = 'whatsapp';
+        }
+        return $keys;
+    }
 }
