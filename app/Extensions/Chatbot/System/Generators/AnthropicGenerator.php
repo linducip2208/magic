@@ -43,7 +43,7 @@ class AnthropicGenerator extends Generator
             ?->sortBy('id')
             ?->map(callback: function ($history) {
                 return [
-                    'role'    => $history->is_visitor ? 'user' : 'assistant',
+                    'role'    => $history->role === 'user' ? 'user' : 'assistant',
                     'content' => $history->message,
                 ];
             })?->toArray();

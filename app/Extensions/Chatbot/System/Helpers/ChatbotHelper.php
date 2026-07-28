@@ -29,4 +29,17 @@ class ChatbotHelper
         }
         return $keys;
     }
+
+    public static function planAllowsHumanAgent(?\App\Models\Plan $plan = null): bool
+    {
+        if ($plan === null) {
+            $plan = auth()->user()?->relationPlan;
+        }
+
+        if (! $plan) {
+            return false;
+        }
+
+        return (bool) $plan->chatbot_human_agent;
+    }
 }
