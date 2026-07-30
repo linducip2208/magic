@@ -37,13 +37,21 @@ Route::view('account-deletion', 'default.account-deletion');
 Route::redirect('subscription', '/', 301);
 Route::middleware('checkInstallation')
     ->group(static function () {
-        Route::get('', IndexController::class)->name('index');
+        Route::get('', static function () {
+            if (auth()->check()) {
+                return redirect()->route('dashboard.index');
+            }
+
+            return app(IndexController::class)();
+        })->name('index');
         Route::controller(PageController::class)
             ->group(static function () {
                 Route::get('privacy-policy', 'pagePrivacy')->name('pagePrivacy');
                 Route::get('terms', 'pageTerms')->name('pageTerms');
                 Route::get('page/{slug}', 'pageContent')->name('pageContent');
             });
+
+        Route::get('blog/feed.xml', [BlogController::class, 'feed'])->name('blog.feed');
 
         Route::controller(BlogController::class)
             ->group(static function () {

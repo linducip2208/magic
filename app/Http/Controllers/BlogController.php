@@ -205,4 +205,37 @@ class BlogController extends Controller
         $post->user_id = Auth::user()->id;
         $post->save();
     }
+
+    public function feed()
+    {
+        $posts = Blog::where('status', 1)
+            ->orderBy('created_at', 'desc')
+            ->limit(20)
+            ->get();
+
+        $xml = '<?xml version="1.0" encoding="UTF-8"?>';
+        $xml .= '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">';
+        $xml .= '<channel>';
+        $xml .= '<title>' . e(config('app.name')) . '</title>';
+        $xml .= '<link>' . e(url('/')) . '</link>';
+        $xml .= '<description>' . e(setting('site_description', config('app.name') . ' Blog')) . '</description>';
+        $xml .= '<language>id</language>';
+        $xml .= '<atom:link href="' . e(url('blog/feed.xml')) . '" rel="self" type="application/rss+xml"/>';
+
+        foreach ($posts as $post) {
+            $xml .= '<item>';
+            $xml .= '<title>' . e($post->title) . '</title>';
+            $xml .= '<link>' . e(url('blog/' . $post->slug)) . '</link>';
+            $xml .= '<guid>' . e(url('blog/' . $post->slug)) . '</guid>';
+            $xml .= '<pubDate>' . $post->created_at->toRfc2822String() . '</pubDate>';
+            $xml .= '<description>' . e(Str::limit(strip_tags((string) $post->content), 300)) . '</description>';
+            $xml .= '</item>';
+        }
+
+        $xml .= '</channel>';
+        $xml .= '</rss>';
+
+        return response($xml, 200)
+            ->header('Content-Type', 'application/xml');
+    }
 }
