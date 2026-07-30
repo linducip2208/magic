@@ -40,8 +40,8 @@ class PlanHelper
         if (! $plan) {
             $freeItems = setting('free_open_ai_items', []);
 
-            if (in_array($key, $freeItems, true)) {
-                return true;
+            if (! empty($freeItems)) {
+                return in_array($key, $freeItems, true);
             }
 
             $openAi = \App\Models\OpenAIGenerator::query()
