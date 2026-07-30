@@ -51,8 +51,22 @@ class Helper
         $permissions = Cache::remember('user_permissions', 60, function () {
             $role = Role::findByName(Roles::USER->value);
 
+            if (! $role) {
+                return [];
+            }
+
             return $role->getAllPermissions()->pluck('name')->toArray();
         });
+
+        if (empty($permissions)) {
+            return true;
+        }
+
+        $exists = DB::table('permissions')->where('name', $key)->exists();
+
+        if (! $exists) {
+            return true;
+        }
 
         return in_array($key, $permissions, true);
     }
