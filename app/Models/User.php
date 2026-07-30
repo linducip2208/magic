@@ -90,7 +90,7 @@ class User extends Authenticatable
         }
 
         if ($this->type === Roles::ADMIN) {
-            return true;
+            return Helper::adminPermissions($key);
         }
 
         if ($this->type === Roles::USER) {

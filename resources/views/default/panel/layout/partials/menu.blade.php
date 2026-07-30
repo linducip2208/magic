@@ -25,8 +25,13 @@
 			continue;
 		}
 
-		// Skip if user doesn't have permission (admin + user menus)
-		if (!$user->checkPermission($key)) {
+		// Admin-only menus: only show to admins with matching permission
+		if ($isAdminOnly && (!$isAdmin || !$user->checkPermission($key))) {
+			continue;
+		}
+
+		// User menus for regular users: check user role permissions
+		if (!$isAdminOnly && !$isAdmin && !$user->checkPermission($key)) {
 			continue;
 		}
 	@endphp
