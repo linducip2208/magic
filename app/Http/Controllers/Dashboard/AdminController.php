@@ -2243,6 +2243,13 @@ class AdminController extends Controller
             Cache::forget('user_permissions');
         }
 
+        Log::info('Permission updated', [
+            'role'         => $roleName,
+            'permissions'   => $permissions,
+            'changed_by'    => auth()->id(),
+            'changed_at'    => now()->toDateTimeString(),
+        ]);
+
         return back()->with(['message' => __('Saved Successfully'), 'type' => 'success']);
     }
 

@@ -104,6 +104,11 @@ class CheckTemplateTypeAndPlan
                 }
             }
         }
+        // check user role permission first (fastest gate)
+        if ($user && ! $user->isAdmin() && $slug && ! Helper::userPermissions($slug)) {
+            return false;
+        }
+
         // get openai record if the slug exist
         $openAi = OpenAIGenerator::query()
             ->where('slug', $slug)
