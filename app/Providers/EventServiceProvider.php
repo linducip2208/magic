@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Events\BankTransferEvent;
 use App\Events\FreePaymentEvent;
+use App\Events\IpaymuWebhookEvent;
 use App\Events\IyzicoLifetimeEvent;
 use App\Events\IyzicoWebhookEvent;
 use App\Events\PaypalLifetimeEvent;
@@ -17,6 +18,7 @@ use App\Events\UsersActivityEvent;
 use App\Events\YokassaWebhookEvent;
 use App\Listeners\BankTransferListener;
 use App\Listeners\FreePaymentListener;
+use App\Listeners\IpaymuWebhookListener;
 use App\Listeners\IyzicoLifetimeListener;
 use App\Listeners\IyzicoWebhookListener;
 use App\Listeners\PaypalLifetimeListener;
@@ -78,6 +80,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         PaystackLifetimeEvent::class => [
             PaystackLifetimeListener::class,
+        ],
+        IpaymuWebhookEvent::class => [
+            IpaymuWebhookListener::class,
         ],
         UsersActivityEvent::class => [
             UsersActivityListener::class,

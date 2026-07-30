@@ -6,6 +6,7 @@ use App\Enums\Contracts\WithStringBackedEnum;
 use App\Enums\Traits\EnumTo;
 use App\Enums\Traits\StringBackedEnumTrait;
 use App\Extensions\Cryptomus\System\Services\CryptomusService;
+use App\Services\PaymentGateways\IpaymuService;
 use App\Services\PaymentGateways\MidtransService;
 
 enum PaymentGatewayEnum: string implements WithStringBackedEnum
@@ -27,6 +28,7 @@ enum PaymentGatewayEnum: string implements WithStringBackedEnum
     case Razorpay = 'razorpay';
     case CryptoMus = 'cryptomus';
     case Midtrans = 'midtrans';
+    case Ipaymu = 'ipaymu';
 
     public function label(): string
     {
@@ -44,6 +46,7 @@ enum PaymentGatewayEnum: string implements WithStringBackedEnum
             self::Razorpay     => __('Razorpay'),
             self::CryptoMus    => __('CryptoMus'),
             self::Midtrans     => __('Midtrans'),
+            self::Ipaymu       => __('iPaymu'),
         };
     }
 
@@ -175,6 +178,17 @@ enum PaymentGatewayEnum: string implements WithStringBackedEnum
                 'link'     => 'https://razorpay.com/',
                 'img'      => '/assets/img/payments/razorpay.svg',
                 'currency' => 0,
+            ]),
+            self::Ipaymu => array_merge($base, [
+                'link'               => 'https://ipaymu.com/',
+                'img'                => '/assets/img/payments/ipaymu.svg',
+                'sandbox_client_id'  => 0,
+                'live_client_id'     => 1,
+                'live_app_id'        => 1,
+                'sandbox_app_id'     => 1,
+                'sandbox_client_secret' => 1,
+                'live_client_secret' => 1,
+                'currency'           => 1,
             ]),
             // extensions to be added below
             self::Midtrans => class_exists(MidtransService::class)

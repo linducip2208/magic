@@ -4,6 +4,7 @@ use App\Extensions\Cryptomus\System\Services\CryptomusService;
 use App\Services\PaymentGateways\CoinbaseService;
 use App\Services\PaymentGateways\CoingateService;
 use App\Services\PaymentGateways\FreeService;
+use App\Services\PaymentGateways\IpaymuService;
 use App\Services\PaymentGateways\IyzicoService;
 use App\Services\PaymentGateways\MidtransService;
 use App\Services\PaymentGateways\PaddleService;
@@ -128,5 +129,9 @@ return [
 
     'midtrans' => [
         'class' => MidtransService::class,
+    ],
+
+    'ipaymu' => [
+        'class' => IpaymuService::class,
     ],
 ];
