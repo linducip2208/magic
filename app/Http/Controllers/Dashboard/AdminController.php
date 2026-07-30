@@ -2215,23 +2215,33 @@ class AdminController extends Controller
         }
     }
 
-    public function userPermissions()
+    public function userPermissions(Request $request)
     {
-        $role = Role::findByName(Roles::ADMIN->value);
+        $selectedRole = $request->query('role', 'admin');
+        $role = Role::findByName($selectedRole);
         $permissions = $role->permissions->pluck('name')->toArray();
 
-        return view('panel.admin.users.permissions', compact('permissions'));
+        $availablePermissions = $selectedRole === 'user'
+            ? $role->getAllPermissions()->pluck('name')->toArray()
+            : collect(\App\Enums\Permissions::cases())->map->value->toArray();
+
+        return view('panel.admin.users.permissions', compact('permissions', 'selectedRole', 'availablePermissions'));
     }
 
     public function userPermissionSave(Request $request): RedirectResponse
     {
         $permissions = $request->input('permissionItems', []);
+        $roleName = $request->input('role', 'admin');
 
-        $role = Role::findByName(Roles::ADMIN->value);
+        $role = Role::findByName($roleName);
 
         $role->syncPermissions($permissions);
 
-        Cache::forget('admin_permissions');
+        if ($roleName === 'admin') {
+            Cache::forget('admin_permissions');
+        } elseif ($roleName === 'user') {
+            Cache::forget('user_permissions');
+        }
 
         return back()->with(['message' => __('Saved Successfully'), 'type' => 'success']);
     }

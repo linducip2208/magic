@@ -48,7 +48,7 @@ class Helper
 
     public static function userPermissions(string $key): bool
     {
-        $permissions = Cache::remember('user_permissions', 3600 * 24, function () {
+        $permissions = Cache::remember('user_permissions', 60, function () {
             $role = Role::findByName(Roles::USER->value);
 
             return $role->getAllPermissions()->pluck('name')->toArray();
