@@ -94,7 +94,10 @@ class IpaymuService
 
             $totalAmount = $newDiscountedPrice + $taxValue;
 
+            [$va] = self::getVaAndKey();
+
             $response = self::createPayment([
+                'account'     => $va,
                 'product'     => [$plan->name],
                 'qty'         => ['1'],
                 'price'       => [(string) $totalAmount],
@@ -102,6 +105,9 @@ class IpaymuService
                 'cancelUrl'   => route('dashboard.user.payment.subscription') . '?ipaymu_cancel=' . $orderId,
                 'notifyUrl'   => url('/webhook/ipaymu'),
                 'referenceId' => $orderId,
+                'buyerName'   => $user->name . ' ' . ($user->surname ?? ''),
+                'buyerEmail'  => $user->email,
+                'buyerPhone'  => $user->phone ?? '081234567890',
             ]);
 
             if (! isset($response['Status']) || $response['Status'] != 200) {
@@ -224,7 +230,10 @@ class IpaymuService
 
             $totalAmount = $newDiscountedPrice + $taxValue;
 
+            [$va] = self::getVaAndKey();
+
             $response = self::createPayment([
+                'account'     => $va,
                 'product'     => [$plan->name],
                 'qty'         => ['1'],
                 'price'       => [(string) $totalAmount],
@@ -232,6 +241,9 @@ class IpaymuService
                 'cancelUrl'   => route('dashboard.user.payment.subscription') . '?ipaymu_cancel=' . $orderId,
                 'notifyUrl'   => url('/webhook/ipaymu'),
                 'referenceId' => $orderId,
+                'buyerName'   => $user->name . ' ' . ($user->surname ?? ''),
+                'buyerEmail'  => $user->email,
+                'buyerPhone'  => $user->phone ?? '081234567890',
             ]);
 
             if (! isset($response['Status']) || $response['Status'] != 200) {

@@ -33,11 +33,26 @@ class PlanHelper
 
     public static function planMenuCheck($plan, ?string $key = null): bool
     {
-        if (! $plan) {
+        if (! $key) {
             return true;
         }
 
-        if (! $key) {
+        if (! $plan) {
+            $freeItems = setting('free_open_ai_items', []);
+
+            if (in_array($key, $freeItems, true)) {
+                return true;
+            }
+
+            $openAi = \App\Models\OpenAIGenerator::query()
+                ->where('slug', $key)
+                ->where('active', 1)
+                ->first();
+
+            if ($openAi) {
+                return $openAi->getAttribute('premium') !== 1;
+            }
+
             return true;
         }
 
