@@ -42,6 +42,7 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('app:test-command')->everyMinute();
 
+        $schedule->command('seo:indexnow')->dailyAt('02:45');
     }
 
     // $schedule->command(RunHealthChecksCommand::class)->everyFiveMinutes();
