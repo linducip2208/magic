@@ -123,7 +123,7 @@ class CheckTemplateTypeAndPlan
             }
 
             if (! $openAi) {
-                return false;
+                return true;
             }
 
             $isPremium = $openAi->getAttribute('premium');
