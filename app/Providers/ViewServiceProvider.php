@@ -87,7 +87,18 @@ class ViewServiceProvider extends ServiceProvider
         });
 
         $this->conditionallyShare('frontend_sections_statuses_titles', function () {
-            $fSectSettings = FrontendSectionsStatus::getCache() ?? tap(new FrontendSectionsStatus)->save();
+            $fSectSettings = FrontendSectionsStatus::getCache() ?? tap(new FrontendSectionsStatus, static function ($model) {
+                $model->features_active        = 1;
+                $model->generators_active      = 1;
+                $model->who_is_for_active      = 1;
+                $model->custom_templates_active = 1;
+                $model->tools_active           = 1;
+                $model->how_it_works_active    = 1;
+                $model->testimonials_active    = 1;
+                $model->pricing_active         = 1;
+                $model->faq_active             = 1;
+                $model->save();
+            });
             View::share('fSectSettings', $fSectSettings);
         });
     }
