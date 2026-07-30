@@ -56,6 +56,10 @@ trait CreditUpdater
                 $driver->setAsUnlimited($credit['isUnlimited']);
             }
         }
+
+        if ($user && $plan?->getAttribute('role')) {
+            $user->update(['type' => $plan->role]);
+        }
     }
 
     /**

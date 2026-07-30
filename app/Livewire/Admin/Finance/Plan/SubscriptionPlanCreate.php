@@ -89,6 +89,7 @@ class SubscriptionPlanCreate extends Component
             'plan.chatbot_human_agent'                        => 'nullable|boolean',
             'plan.affiliate_status'                           => 'nullable|boolean',
             'plan.is_featured'                                => 'required_if:step,1|nullable|boolean',
+            'plan.role'                                       => 'nullable|string',
             'plan.user_api'                                   => 'required_if:step,1|nullable|boolean',
             'plan.plan_type'                                  => 'required_if:step,1|in:' . implode(',', AccessType::getValues()),
             'plan.default_ai_model'                           => 'required_if:step,1|string|max:255',

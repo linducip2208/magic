@@ -110,12 +110,30 @@
 								{{ __('Yes') }}
 							</option>
 						@endif
-					</x-forms.input>
+				</x-forms.input>
 
-				</div>
 				<x-forms.input
-					class:container="w-full mt-4"
-					id="description"
+					class:container="w-1/2 mt-4"
+					id="role"
+					name="role"
+					type="select"
+					size="lg"
+					label="{{ __('Assign Role on Subscribe') }}"
+					tooltip="{{ __('User will get this role after successful subscription') }}"
+				>
+					<option value="">{{ __('No Change') }}</option>
+					@foreach (\App\Enums\Roles::cases() as $role)
+						<option
+							value="{{ $role->value }}"
+							@selected(($subscription->role ?? null) === $role->value)
+						>{{ $role->label() }}</option>
+					@endforeach
+				</x-forms.input>
+
+			</div>
+			<x-forms.input
+				class:container="w-full mt-4"
+				id="description"
 					name="description"
 					label="{{ __('Plan Description') }}"
 					size="lg"

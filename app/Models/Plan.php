@@ -39,6 +39,7 @@ class Plan extends Model
         'currency',
         'frequency',
         'is_featured',
+        'role',
         'stripe_product_id',
         'ai_name',
         'max_tokens',
