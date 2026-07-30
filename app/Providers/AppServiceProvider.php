@@ -49,6 +49,7 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        $this->ensureStorageDirectories();
         $this->forceSchemeHttps();
 
         $this->app->useLangPath(base_path('lang'));
@@ -66,6 +67,22 @@ class AppServiceProvider extends ServiceProvider
         $this->registerHealthChecks();
         $this->bootBladeDirectives();
         $this->bootObservers();
+    }
+
+    private function ensureStorageDirectories(): void
+    {
+        $dirs = [
+            storage_path('framework/cache/data'),
+            storage_path('framework/views'),
+            storage_path('framework/sessions'),
+            storage_path('logs'),
+        ];
+
+        foreach ($dirs as $dir) {
+            if (! is_dir($dir)) {
+                @mkdir($dir, 0755, true);
+            }
+        }
     }
 
     public function forceSchemeHttps(): void
