@@ -2221,9 +2221,16 @@ class AdminController extends Controller
         $role = Role::findByName($selectedRole);
         $permissions = $role->permissions->pluck('name')->toArray();
 
-        $availablePermissions = $selectedRole === 'user'
-            ? $role->getAllPermissions()->pluck('name')->toArray()
-            : collect(\App\Enums\Permissions::cases())->map->value->toArray();
+        if ($selectedRole === 'user') {
+            $adminPermNames = collect(\App\Enums\Permissions::cases())->map->value->toArray();
+
+            $availablePermissions = \DB::table('permissions')
+                ->whereNotIn('name', $adminPermNames)
+                ->pluck('name')
+                ->toArray();
+        } else {
+            $availablePermissions = collect(\App\Enums\Permissions::cases())->map->value->toArray();
+        }
 
         return view('panel.admin.users.permissions', compact('permissions', 'selectedRole', 'availablePermissions'));
     }
