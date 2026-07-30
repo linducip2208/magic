@@ -163,18 +163,14 @@ class IpaymuService
         if ($payment->status === 'Success') {
             session()->forget(['ipaymu_session_id', 'ipaymu_order_id', 'ipaymu_plan_id']);
 
-            return redirect()->route('dashboard.' . $user->type->value . '.index')
-                ->with([
-                    'message' => __('Thank you for your purchase. Enjoy your remaining words and images.'),
-                    'type'    => 'success',
-                ]);
+            return redirect()->route('dashboard.user.payment.succesful');
         }
 
         if ($payment->status === 'Waiting') {
             return view('panel.user.finance.partials.ipaymu-processing', [
                 'orderId'   => $orderId,
                 'checkUrl'  => route('dashboard.user.payment.subscription.checkout', ['gateway' => 'ipaymu']) . '?ipaymu_order=' . $orderId,
-                'dashUrl'   => route('dashboard.' . $user->type->value . '.index'),
+                'dashUrl'   => route('dashboard.user.payment.succesful'),
             ]);
         }
 
@@ -305,18 +301,14 @@ class IpaymuService
         if ($payment->status === 'Success') {
             session()->forget(['ipaymu_session_id', 'ipaymu_order_id', 'ipaymu_plan_id']);
 
-            return redirect()->route('dashboard.' . $user->type->value . '.index')
-                ->with([
-                    'message' => __('Thank you for your purchase. Enjoy your remaining words and images.'),
-                    'type'    => 'success',
-                ]);
+            return redirect()->route('dashboard.user.payment.succesful');
         }
 
         if ($payment->status === 'Waiting') {
             return view('panel.user.finance.partials.ipaymu-processing', [
                 'orderId'   => $orderId,
                 'checkUrl'  => route('dashboard.user.payment.prepaid.checkout', ['gateway' => 'ipaymu']) . '?ipaymu_prepaid=' . $orderId,
-                'dashUrl'   => route('dashboard.' . $user->type->value . '.index'),
+                'dashUrl'   => route('dashboard.user.payment.succesful'),
             ]);
         }
 

@@ -29,7 +29,7 @@
 @push('script')
     <script>
         setTimeout(function () {
-            window.location.reload();
+            window.location.href = '{{ $checkUrl }}';
         }, 3000);
     </script>
 @endpush
