@@ -59,7 +59,7 @@ class IndexController extends Controller
         $who_is_for = FrontendForWho::all();
         $generatorsList = FrontendGenerators::orderBy('created_at', 'desc')->get();
 
-        $posts = Blog::where('status', 1)->orderBy('id', 'desc')->paginate(FrontendSectionsStatus::first()->blog_posts_per_page ?? 3);
+        $posts = Blog::where('status', 1)->orderBy('id', 'desc')->paginate(FrontendSectionsStatus::first()?->blog_posts_per_page ?? 3);
 
         $type = setting('frontend_additional_url_type', 'default');
         if ($type !== 'default') {
