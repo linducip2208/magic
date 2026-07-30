@@ -527,6 +527,10 @@ class IpaymuService
             $apiKey = $gateway->live_client_secret;
         }
 
+        if (empty($va) || empty($apiKey)) {
+            abort(500, __('iPaymu gateway is not configured (VA/API Key missing). Please contact admin.'));
+        }
+
         return [$va, $apiKey];
     }
 
