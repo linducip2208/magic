@@ -15,7 +15,7 @@
 		$childrenCount  = data_get($item, 'children_count', 0);
 		$type           = data_get($item, 'type');
 
-		// Skip early if plan doesn’t allow it
+		// Skip early if plan doesn't allow it
 		if (!\App\Helpers\Classes\PlanHelper::planMenuCheck($userPlan, $key)) {
 			continue;
 		}
@@ -25,8 +25,8 @@
 			continue;
 		}
 
-		// Skip if admin-only and user not allowed
-		if ($isAdminOnly && (!$isAdmin || !$user->checkPermission($key))) {
+		// Skip if user doesn't have permission (admin + user menus)
+		if (!$user->checkPermission($key)) {
 			continue;
 		}
 	@endphp

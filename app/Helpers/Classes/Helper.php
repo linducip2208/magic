@@ -46,6 +46,17 @@ class Helper
         return $permissions->contains($key);
     }
 
+    public static function userPermissions(string $key): bool
+    {
+        $permissions = Cache::remember('user_permissions', 3600 * 24, function () {
+            $role = Role::findByName(Roles::USER->value);
+
+            return $role->getAllPermissions()->pluck('name')->toArray();
+        });
+
+        return in_array($key, $permissions, true);
+    }
+
     public static function getCurrentActiveSubscription($userId = null)
     {
         if (self::appIsDemo()) {

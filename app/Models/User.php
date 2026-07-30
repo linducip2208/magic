@@ -89,8 +89,12 @@ class User extends Authenticatable
             return true;
         }
 
-        if (Helper::adminPermissions($key) && $this->type === Roles::ADMIN) {
-            return true;
+        if ($this->type === Roles::ADMIN) {
+            return Helper::adminPermissions($key);
+        }
+
+        if ($this->type === Roles::USER) {
+            return Helper::userPermissions($key);
         }
 
         return false;
