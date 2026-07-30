@@ -179,8 +179,8 @@ Route::middleware(['auth', 'updateUserActivity'])
                     Route::get('{workbook_slug?}', [GeneratorController::class, 'index'])->name('index')->middleware(CheckTemplateTypeAndPlan::class);
                     Route::get('/option/{slug}', [GeneratorController::class, 'generatorOptions'])->name('options')->middleware(CheckTemplateTypeAndPlan::class);
 
-                    Route::post('/generate-stream', [GeneratorController::class, 'buildStreamedOutput'])->name('stream.generate')->middleware('surveyMiddleware');
-                    Route::post('/reduce-tokens/{type}', [GeneratorController::class, 'reduceTokensWhenIntterruptStream'])->name('reduce-tokens');
+                    Route::post('/generate-stream', [GeneratorController::class, 'buildStreamedOutput'])->name('stream.generate')->middleware('surveyMiddleware', CheckTemplateTypeAndPlan::class);
+                    Route::post('/reduce-tokens/{type}', [GeneratorController::class, 'reduceTokensWhenIntterruptStream'])->name('reduce-tokens')->middleware(CheckTemplateTypeAndPlan::class);
                 });
 
                 // Openai generator
@@ -210,7 +210,7 @@ Route::middleware(['auth', 'updateUserActivity'])
                         });
 
                         // Generators Generate
-                        Route::post('/generate', [AIController::class, 'buildOutput'])->name('output');
+                        Route::post('/generate', [AIController::class, 'buildOutput'])->name('output')->middleware(CheckTemplateTypeAndPlan::class);
 
                         Route::get('/generate', [AIController::class, 'streamedTextOutput']);
 
@@ -222,7 +222,7 @@ Route::middleware(['auth', 'updateUserActivity'])
 
                         Route::get('/generate/lazyload', [AIController::class, 'lazyLoadImage'])->name('lazyloadimage');
 
-                        Route::post('/image/generate', [AIController::class, 'chatImageOutput'])->name('chat.image');
+                        Route::post('/image/generate', [AIController::class, 'chatImageOutput'])->name('chat.image')->middleware(CheckTemplateTypeAndPlan::class);
 
                         // Fine Tune
                         Route::post('/add-fine-tune', [AIFineTuneController::class, 'addFineTune']);
@@ -261,8 +261,8 @@ Route::middleware(['auth', 'updateUserActivity'])
                         Route::prefix('chat')->name('chat.')->group(function () {
                             Route::get('/ai-chat-list', [AIChatController::class, 'openAIChatList'])->name('list')->middleware(CheckTemplateTypeAndPlan::class);
                             Route::get('/ai-chat/{slug?}', [AIChatController::class, 'openAIChat'])->name('chat')->middleware(CheckTemplateTypeAndPlan::class);
-                            Route::match(['get', 'post'], '/chat-send', [AIChatController::class, 'chatOutput']);
-                            Route::match(['get', 'post'], '/chatbot-send', [AIChatController::class, 'chatbotOutput']);
+                            Route::match(['get', 'post'], '/chat-send', [AIChatController::class, 'chatOutput'])->name('chat-send')->middleware(CheckTemplateTypeAndPlan::class);
+                            Route::match(['get', 'post'], '/chatbot-send', [AIChatController::class, 'chatbotOutput'])->name('chatbot-send')->middleware(CheckTemplateTypeAndPlan::class);
                             Route::post('/open-chat-area-container', [AIChatController::class, 'openChatAreaContainer']);
                             Route::post('/open-chatbot-area', [AIChatController::class, 'openChatBotArea'])->name('open-chatbot-area');
                             Route::post('/start-new-chat', [AIChatController::class, 'startNewChat']);
@@ -296,12 +296,12 @@ Route::middleware(['auth', 'updateUserActivity'])
                         Route::prefix('articlewizard')->name('articlewizard.')->group(function () {
                             Route::get('/new', [AIArticleWizardController::class, 'newArticle'])->name('new')->middleware(CheckTemplateTypeAndPlan::class);
                             Route::get('/genarticle', [AIArticleWizardController::class, 'generateArticle'])->name('genarticle');
-                            Route::post('/update', [AIArticleWizardController::class, 'updateArticle'])->name('update');
+                            Route::post('/update', [AIArticleWizardController::class, 'updateArticle'])->name('update')->middleware(CheckTemplateTypeAndPlan::class);
                             Route::post('/clear', [AIArticleWizardController::class, 'clearArticle'])->name('clear');
-                            Route::post('/genkeywords', [AIArticleWizardController::class, 'generateKeywords'])->name('genkeywords');
-                            Route::post('/gentitles', [AIArticleWizardController::class, 'generateTitles'])->name('gentitles');
-                            Route::post('/genoutlines', [AIArticleWizardController::class, 'generateOutlines'])->name('genoutlines');
-                            Route::post('/genimages', [AIArticleWizardController::class, 'generateImages'])->name('genimages');
+                            Route::post('/genkeywords', [AIArticleWizardController::class, 'generateKeywords'])->name('genkeywords')->middleware(CheckTemplateTypeAndPlan::class);
+                            Route::post('/gentitles', [AIArticleWizardController::class, 'generateTitles'])->name('gentitles')->middleware(CheckTemplateTypeAndPlan::class);
+                            Route::post('/genoutlines', [AIArticleWizardController::class, 'generateOutlines'])->name('genoutlines')->middleware(CheckTemplateTypeAndPlan::class);
+                            Route::post('/genimages', [AIArticleWizardController::class, 'generateImages'])->name('genimages')->middleware(CheckTemplateTypeAndPlan::class);
                             Route::post('/remains', [AIArticleWizardController::class, 'userRemaining'])->name('remains');
 
                             Route::get('/', [AIArticleWizardController::class, 'index'])->name('index');

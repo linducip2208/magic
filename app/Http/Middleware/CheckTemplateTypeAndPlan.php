@@ -61,6 +61,19 @@ class CheckTemplateTypeAndPlan
             'dashboard.user.social-media.calendar'       => 'ext_social_media_dropdown',
             'dashboard.user.ai-music-pro.index'          => 'ext_ai_music_pro',
             'dashboard.user.ai-presentation.index'       => 'ai_presentation',
+
+            // POST generation routes
+            'dashboard.user.generator.stream.generate'   => 'ai_editor',
+            'dashboard.user.generator.reduce-tokens'     => 'ai_editor',
+            'dashboard.user.openai.output'               => 'ai_writer',
+            'dashboard.user.openai.chat.image'           => 'ai_chat_image',
+            'dashboard.user.openai.chat.chat-send'       => 'ai_chat_all',
+            'dashboard.user.openai.chat.chatbot-send'    => 'ext_chat_bot',
+            'dashboard.user.openai.articlewizard.update' => 'ai_article_wizard_generator',
+            'dashboard.user.openai.articlewizard.genkeywords' => 'ai_article_wizard_generator',
+            'dashboard.user.openai.articlewizard.gentitles'   => 'ai_article_wizard_generator',
+            'dashboard.user.openai.articlewizard.genoutlines' => 'ai_article_wizard_generator',
+            'dashboard.user.openai.articlewizard.genimages'   => 'ai_article_wizard_generator',
         ];
 
         // Wildcard route prefixes mapped to slugs
